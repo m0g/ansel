@@ -30,9 +30,10 @@ export interface Props {
     togglePhotoSelected(): void
     enterCropMode(): void
     closeDetail(): void
+    movePhotosToTrash(): void
 }
 
-type CommandKeys = 'close' | 'prevPhoto' | 'nextPhoto' | 'toggleSelected' | 'edit'
+type CommandKeys = 'close' | 'prevPhoto' | 'nextPhoto' | 'toggleSelected' | 'edit' | 'delete'
 
 export default class ViewModeLayer extends React.Component<Props> {
 
@@ -49,6 +50,7 @@ export default class ViewModeLayer extends React.Component<Props> {
             nextPhoto: { combo: 'right', enabled: () => !this.props.isLast, label: msg('PhotoDetailPane_nextPhoto'), onAction: props.setNextDetailPhoto },
             toggleSelected: { combo: 'space', enabled: () => !!this.props.inSelectionMode, onAction: props.togglePhotoSelected },
             edit: { combo: 'enter', enabled: () => this.props.showEditButton, label: msg('PhotoDetailPane_edit'), onAction: props.enterCropMode },
+            delete: { combo: 'del', enabled: () => true, onAction: props.movePhotosToTrash },
         }
     }
 

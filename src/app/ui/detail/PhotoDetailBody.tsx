@@ -23,6 +23,7 @@ import ViewModeLayer from './ViewModeLayer'
 
 import './PhotoDetailBody.less'
 
+import {movePhotosToTrash} from 'app/util/PhotoUtil'
 
 export const cropModeInsets: Insets = { left: 60, right: 80, top: 60, bottom: 60 }
 
@@ -75,7 +76,7 @@ export default class PhotoDetailBody extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props)
         bindMany(this, 'onLoadingStateChange', 'onResize', 'onTextureChange', 'onTogglePhotoSelected', 
-            'setPhotoPosition', 'enterCropMode', 'onPhotoWorkEdited', 'onCropDone')
+            'setPhotoPosition', 'enterCropMode', 'onPhotoWorkEdited', 'onCropDone', "moveToTrash")
         const cameraMetricsBuilder = new CameraMetricsBuilder()
         this.state = {
             prevMode: null,
@@ -200,6 +201,11 @@ export default class PhotoDetailBody extends React.Component<Props, State> {
         this.props.setMode('view')
     }
 
+    private moveToTrash() { 
+        const {props} = this
+        movePhotosToTrash(props.photo, props.photoActionController)
+    }
+
     render() {
         const { props, state } = this
         const isSelected = isPhotoSelected(props.sectionId, props.photo.id, props.selection)
@@ -256,6 +262,7 @@ export default class PhotoDetailBody extends React.Component<Props, State> {
                         togglePhotoSelected={this.onTogglePhotoSelected}
                         enterCropMode={this.enterCropMode}
                         closeDetail={props.closeDetail}
+                        movePhotosToTrash={this.moveToTrash}
                     />
                 }
                 {props.mode === 'crop' && props.photoWork && state.cameraMetrics &&

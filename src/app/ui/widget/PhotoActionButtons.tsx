@@ -13,6 +13,7 @@ import { getCollectionSize } from 'app/util/PhotoCollectionResolver'
 
 import RotateButtonGroup from './RotateButtonGroup'
 
+import {movePhotosToTrash} from 'app/util/PhotoUtil'
 
 interface Props {
     selectedPhotos: PhotoCollection | null
@@ -51,15 +52,7 @@ export default class PhotoActionButtons extends React.Component<Props> {
 
     private moveToTrash() {
         const { props } = this
-        if (props.selectedPhotos) {
-            const photosCount = getCollectionSize(props.selectedPhotos)
-            props.photoActionController.movePhotosToTrash(props.selectedPhotos)
-            toaster.show({
-                icon: 'tick',
-                message: photosCount === 1 ? msg('PhotoActionButtons_movedToTrash_one') : msg('PhotoActionButtons_movedToTrash_more', formatNumber(photosCount)),
-                intent: 'success'
-            })
-        }
+        movePhotosToTrash(props.selectedPhotos, props.photoActionController)
     }
 
     private restoreFromTrash() {
